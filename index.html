@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asmi Dalvi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: rgba(255,255,255,0.05);
+      --border: rgba(255,255,255,0.12);
+      --border-bright: rgba(255,255,255,0.32);
+      --text: #f0f0f0;
+      --muted: #888;
+      --chrome: linear-gradient(135deg, #c8c8c8 0%, #ffffff 25%, #a8a8a8 45%, #efefef 65%, #c0c0c0 80%, #ffffff 100%);
+      --chrome-text: linear-gradient(160deg, #e0e0e0 0%, #ffffff 20%, #aaa 45%, #f8f8f8 65%, #c8c8c8 85%, #ffffff 100%);
+      --silver: #d4d4d4;
+      --radius: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO CANVAS ── */
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Subtle persistent orbs for non-hero sections */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.07;
+      animation: drift linear infinite;
+    }
+
+    .orb-1 {
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, #e0e0e0, #707070);
+      top: 60%; left: -100px;
+      animation-duration: 22s;
+    }
+    .orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #ffffff, #a0a0a0);
+      top: 80%; right: -100px;
+      animation-duration: 28s;
+      animation-delay: -10s;
+    }
+    .orb-3 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #cccccc, #505050);
+      bottom: 0; left: 40%;
+      animation-duration: 20s;
+      animation-delay: -16s;
+    }
+
+    @keyframes drift {
+      0%   { transform: translate(0, 0) scale(1); }
+      25%  { transform: translate(60px, -40px) scale(1.05); }
+      50%  { transform: translate(30px, 80px) scale(0.95); }
+      75%  { transform: translate(-40px, 30px) scale(1.03); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    /* Film grain overlay */
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* Chrome shimmer on elements */
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 64px;
+      background: rgba(7,7,7,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: transparent;
+      background: var(--chrome-text);
+      background-clip: text;
+      -webkit-background-clip: text;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: transparent;
+      border: 1px solid var(--border-bright);
+      color: var(--text);
+      letter-spacing: 0.04em;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+      background-size: 200% 100%;
+      animation: shimmer 3s infinite;
+    }
+
+    .nav-cta:hover {
+      border-color: rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 48px 80px;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeInDown 0.8s ease-out 0.2s forwards;
+    }
+
+    .eyebrow-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--silver);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.4); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 7vw, 6.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 28px;
+      color: transparent;
+      background: var(--chrome-text);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      animation: shimmer 6s linear infinite, fadeInUp 0.9s ease-out 0.3s both;
+    }
+
+    h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, #ffffff 0%, #c0c0c0 40%, #f5f5f5 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: #777;
+      max-width: 520px;
+      margin-bottom: 44px;
+      line-height: 1.75;
+      font-weight: 300;
+      animation: fadeInUp 0.9s ease-out 0.55s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeInUp 0.9s ease-out 0.75s both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 30px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s;
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-chrome {
+      background: var(--chrome);
+      color: #111;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(220,220,220,0.25), inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .btn-chrome::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.55) 50%, transparent 80%);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite;
+    }
+
+    .btn-chrome:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 50px rgba(220,220,220,0.35), inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border-bright);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 44px;
+      left: 64px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-line {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--silver));
+      animation: expandLine 2.5s ease-in-out infinite;
+    }
+
+    @keyframes expandLine {
+      0%, 100% { width: 32px; opacity: 0.3; }
+      50% { width: 56px; opacity: 0.8; }
+    }
+
+    /* ── SECTIONS ── */
+    section { position: relative; z-index: 1; }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--silver);
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      color: transparent;
+      background: var(--chrome-text);
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      padding: 120px 64px;
+      border-top: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: start;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .about-text p {
+      color: #999;
+      font-size: 0.95rem;
+      line-height: 1.85;
+      margin-bottom: 18px;
+      font-weight: 300;
+    }
+
+    .about-text p strong { color: #ddd; font-weight: 500; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.14);
+      padding: 32px 28px;
+      transition: border-color 0.3s, background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:first-child { border-radius: 14px 0 0 0; }
+    .stat-card:nth-child(2) { border-radius: 0 14px 0 0; }
+    .stat-card:nth-child(3) { border-radius: 0 0 0 14px; }
+    .stat-card:last-child { border-radius: 0 0 14px 0; }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-bright);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 8px;
+      color: transparent;
+      background: var(--chrome);
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── PROJECTS ── */
+    #projects {
+      padding: 120px 64px;
+      border-top: 1px solid var(--border);
+    }
+
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 60px;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s;
+    }
+
+    .project-card:first-child { border-radius: 14px 0 0 0; }
+    .project-card:nth-child(2) { border-radius: 0 14px 0 0; }
+    .project-card:nth-last-child(2):not(.wide) { border-radius: 0 0 0 14px; }
+    .project-card.wide { grid-column: span 2; border-radius: 0 0 14px 14px; }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: var(--chrome);
+      background-size: 200% 100%;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+      animation: shimmer 3s infinite;
+    }
+
+    .project-card:hover {
+      background: rgba(255,255,255,0.045);
+      border-color: var(--border-bright);
+    }
+
+    .project-card:hover::before { transform: scaleX(1); }
+
+    /* Reflection layer */
+    .project-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.025) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .project-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-bright);
+      color: var(--muted);
+    }
+
+    .tag-live { border-color: rgba(200,200,200,0.2); color: #aaa; }
+    .tag-wip  { border-color: rgba(160,160,160,0.15); color: #777; }
+    .tag-startup {
+      background: linear-gradient(135deg, rgba(200,200,200,0.08), rgba(255,255,255,0.04));
+      border-color: rgba(200,200,200,0.25);
+      color: #c0c0c0;
+    }
+
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      line-height: 1.2;
+      color: transparent;
+      background: linear-gradient(135deg, #d0d0d0, #ffffff 40%, #a0a0a0);
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .project-desc {
+      color: #777;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      margin-bottom: 24px;
+      font-weight: 300;
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+
+    .tech-chip {
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: #888;
+      letter-spacing: 0.02em;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: all 0.2s;
+    }
+
+    .link-primary {
+      background: var(--chrome);
+      color: #111;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 20px rgba(220,220,220,0.2), inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    .link-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.5) 50%, transparent 80%);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite;
+    }
+
+    .link-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 28px rgba(220,220,220,0.3), inset 0 1px 0 rgba(255,255,255,0.7); }
+
+    .link-ghost {
+      background: transparent;
+      color: #666;
+      border: 1px solid var(--border);
+    }
+
+    .link-ghost:hover { border-color: var(--border-bright); color: #aaa; }
+
+    /* Wide card layout */
+    .wide-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .wide-visual {
+      width: 200px;
+      height: 140px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #111 0%, #1c1c1c 50%, #0a0a0a 100%);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .wide-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(180,180,180,0.06) 60deg, transparent 120deg);
+      animation: spin 12s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* LEDGR visual */
+    .ledgr-visual {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+      background: linear-gradient(160deg, #0e0e0e 0%, #181818 100%);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ledgr-visual::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: conic-gradient(from 0deg, transparent, rgba(200,200,200,0.04), transparent 30%);
+      animation: spin 8s linear infinite;
+    }
+
+    .ledgr-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      font-weight: 700;
+      font-style: italic;
+      color: transparent;
+      background: var(--chrome);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      animation: shimmer 4s linear infinite;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── SKILLS ── */
+    #skills {
+      padding: 120px 64px;
+      border-top: 1px solid var(--border);
+    }
+
+    .skills-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .skills-inner h2 { margin-bottom: 52px; }
+
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .skill-pill {
+      padding: 12px 22px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #888;
+      letter-spacing: 0.03em;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-pill::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.04) 50%, transparent 70%);
+      background-size: 200% 100%;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .skill-pill:hover {
+      border-color: var(--border-bright);
+      color: #bbb;
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-2px);
+    }
+
+    .skill-pill:hover::before { opacity: 1; animation: shimmer 1.5s infinite; }
+
+    /* ── CONTACT ── */
+    #contact {
+      padding: 120px 64px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    #contact h2 { margin-bottom: 14px; }
+    #contact > p { color: var(--muted); font-size: 0.9rem; font-weight: 300; margin-bottom: 44px; }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #666;
+      text-decoration: none;
+      transition: all 0.25s;
+      letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-link::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.04) 50%, transparent 70%);
+      background-size: 200% 100%;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--border-bright);
+      color: #bbb;
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-2px);
+    }
+
+    .contact-link:hover::before { opacity: 1; animation: shimmer 1.5s infinite; }
+    .contact-link svg { width: 16px; height: 16px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: #333;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer a { color: #555; text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: #999; }
+
+    /* ── FADE UP ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      #hero, #about, #projects, #skills, #contact { padding: 80px 24px; }
+      h1 { font-size: 2.8rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.wide { grid-column: span 1; }
+      .wide-inner { grid-template-columns: 1fr; }
+      .wide-visual { display: none; }
+      .ledgr-visual { display: none; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+      .hero-scroll { display: none; }
+
+      .project-card:first-child { border-radius: 14px 14px 0 0; }
+      .project-card:nth-child(2) { border-radius: 0; }
+      .project-card.wide { border-radius: 0 0 14px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-canvas">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="grid-overlay"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">Asmi Dalvi</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="mailto:asmidalvii@gmail.com" class="nav-cta">Let's talk →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="eyebrow-dot"></div>
+        Computer Science · MIT Bengaluru
+      </div>
+      <h1>Building things<br/>that <em>actually</em><br/>matter.</h1>
+      <p class="hero-sub">
+        Computer Science student building at the intersection of finance, software, and business.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-chrome">View my work</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-text fade-up">
+        <div class="section-label">About</div>
+        <h2>Hi, I'm Asmi.</h2>
+        <p>
+          A Computer Science student at MIT Bangalore who got into finance in the most practical way possible: by actually running a business.
+        </p>
+        <p>
+          That experience showed me how confusing and exhausting managing money can feel when you're handling everything on your own. You care deeply about your business, but the financial side often feels fragmented, overwhelming, and difficult to fully understand.
+        </p>
+        <p>
+          It made me start asking a question I couldn't stop thinking about:
+        </p>
+        <p>
+          <strong>Why is financial clarity still so inaccessible for small business owners?</strong>
+        </p>
+        <p>
+          Most tools are either too expensive, too complicated, or designed for companies that already have finance teams. Most small businesses have none of that. They just have owners trying to make good decisions with limited visibility.
+        </p>
+        <p>
+          That question pulled me into fintech.
+        </p>
+        <p>
+          Along the way, I also became deeply interested in markets themselves. The structure underneath price movements, the logic beneath apparent chaos, and the patterns that begin to emerge when you look closely enough.
+        </p>
+        <p>
+          So I started building.
+        </p>
+        <p>
+          Each project taught me something new about systems, markets, and the way money actually moves.
+        </p>
+        <p>
+          Right now, I'm building <strong>Ledgr</strong>, a financial tool designed for small business owners who are exceptional at what they do but shouldn't have to struggle to understand their own finances.
+        </p>
+        <p>
+          Originally from Mumbai, currently building in Bangalore, and still very early in the journey.
+        </p>
+      </div>
+      <div class="about-stats fade-up">
+        <div class="stat-card">
+          <div class="stat-number">4</div>
+          <div class="stat-label">Projects built</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">2</div>
+          <div class="stat-label">Startups founded</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">2nd</div>
+          <div class="stat-label">Year, B.Tech CSE</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Curiosity remaining</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="projects-header fade-up">
+      <div>
+        <div class="section-label">Work</div>
+        <h2>Things I've built.</h2>
+      </div>
+      <a href="https://github.com/asmidalvii-byte" target="_blank" rel="noopener" class="btn btn-ghost" style="font-size:0.8rem;padding:10px 22px;">
+        GitHub →
+      </a>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- MISCRNR — wide -->
+      <div class="project-card wide fade-up">
+        <span class="project-tag tag-startup">Startup · Closed</span>
+        <div class="project-title">MISCRNR <span style="font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:400;color:var(--muted);font-style:normal;">Mar '25 – Jul '25</span></div>
+        <p class="project-desc">
+          MISCRNR was a handmade jewelry brand I started and operated primarily through Instagram. The brand focused on curated, handmade pieces and was built independently from sourcing and design to marketing, customer communication, and order management.
+        </p>
+        <p class="project-desc">
+          Within the first two months, MISCRNR generated over INR 20K in revenue through organic reach and direct customer engagement on social media.
+        </p>
+        <p class="project-desc">
+          The business was eventually put on hold indefinitely after I relocated to Bangalore for college, but it became my first real experience with building and managing a business from the ground up.
+        </p>
+        <div class="project-tech">
+          <span class="tech-chip">Instagram</span>
+          <span class="tech-chip">Handmade Jewelry</span>
+          <span class="tech-chip">D2C</span>
+        </div>
+      </div>
+
+      <!-- Portfolio Tracker -->
+      <div class="project-card fade-up">
+        <span class="project-tag tag-live">Live</span>
+        <div class="project-title">US Stock Portfolio Tracker</div>
+        <p class="project-desc">
+          Fetches real-time US stock prices, calculates P&amp;L per position, tracks cost basis,
+          and visualizes allocation and price history with interactive Plotly charts — persisted in SQLite.
+        </p>
+        <div class="project-tech">
+          <span class="tech-chip">Python</span>
+          <span class="tech-chip">Streamlit</span>
+          <span class="tech-chip">SQLite</span>
+          <span class="tech-chip">SQLAlchemy</span>
+          <span class="tech-chip">yfinance</span>
+          <span class="tech-chip">Plotly</span>
+          <span class="tech-chip">pandas</span>
+        </div>
+        <div class="project-links">
+          <a href="https://portfoliotracker-d8npsnkzpyebcgddmfy3uk.streamlit.app" target="_blank" rel="noopener" class="link-btn link-primary">Live Demo →</a>
+          <a href="https://github.com/asmidalvii-byte/Portfolio_Tracker" target="_blank" rel="noopener" class="link-btn link-ghost">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Backtesting Engine -->
+      <div class="project-card fade-up">
+        <span class="project-tag tag-live">Live</span>
+        <div class="project-title">NSE Backtesting Engine</div>
+        <p class="project-desc">
+          Tests Moving Average Crossover and RSI strategies on NSE Indian stocks in INR.
+          Adjustable parameters, buy/sell signal charts, performance metrics, and portfolio
+          vs buy-and-hold comparison — deployed on Render with Gunicorn.
+        </p>
+        <div class="project-tech">
+          <span class="tech-chip">Python</span>
+          <span class="tech-chip">Dash</span>
+          <span class="tech-chip">Plotly</span>
+          <span class="tech-chip">yfinance</span>
+          <span class="tech-chip">pandas</span>
+          <span class="tech-chip">numpy</span>
+          <span class="tech-chip">Gunicorn</span>
+        </div>
+        <div class="project-links">
+          <a href="https://backtesting-engine.onrender.com" target="_blank" rel="noopener" class="link-btn link-primary">Live Demo →</a>
+          <a href="https://github.com/asmidalvii-byte/backtesting-engine" target="_blank" rel="noopener" class="link-btn link-ghost">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Ledgr — wide -->
+      <div class="project-card wide fade-up">
+        <span class="project-tag tag-startup">Startup · In Progress</span>
+        <div class="project-title">Ledgr</div>
+        <p class="project-desc">
+          Ledgr is a fintech-focused project aimed at helping small business owners better understand and manage their finances through simple, modern digital tools.
+        </p>
+        <p class="project-desc">
+          The goal behind Ledgr is to make financial clarity more accessible by simplifying things like cash flow tracking, operational visibility, and day-to-day financial decision making for businesses that often don't have dedicated finance teams or expensive software.
+        </p>
+        <p class="project-desc">
+          At its core, Ledgr is built around the idea that business owners should be able to focus on running their business without constantly feeling overwhelmed by the financial side of it.
+        </p>
+        <div class="project-tech">
+          <span class="tech-chip">Fintech</span>
+          <span class="tech-chip">Financial Clarity</span>
+        </div>
+      </div>
+
+      <!-- Dark Pool Simulator — wide -->
+      <div class="project-card wide fade-up">
+        <span class="project-tag tag-wip">In Progress</span>
+        <div class="project-title">Dark Pool Simulator</div>
+        <p class="project-desc">
+          I became interested in the structure underneath price movements — the logic beneath
+          apparent chaos. This models how dark pools work: order matching, price discovery,
+          and what hidden liquidity does to public prices.
+        </p>
+        <div class="project-tech">
+          <span class="tech-chip">Python</span>
+          <span class="tech-chip">Market Microstructure</span>
+          <span class="tech-chip">Simulation</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/asmidalvii-byte" target="_blank" rel="noopener" class="link-btn link-ghost">Follow on GitHub</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="skills-inner">
+      <div class="section-label" style="justify-content:center;">Skills</div>
+      <h2>My toolkit.</h2>
+      <div class="skills-grid fade-up">
+        <div class="skill-pill">Python</div>
+        <div class="skill-pill">Java</div>
+        <div class="skill-pill">HTML &amp; CSS</div>
+        <div class="skill-pill">Data Analysis</div>
+        <div class="skill-pill">Quantitative Finance</div>
+        <div class="skill-pill">Algorithmic Trading</div>
+        <div class="skill-pill">Git &amp; GitHub</div>
+        <div class="skill-pill">pandas · numpy</div>
+        <div class="skill-pill">Streamlit · Dash</div>
+        <div class="skill-pill">Plotly</div>
+        <div class="skill-pill">SQLite · SQLAlchemy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-label" style="justify-content:center;">Contact</div>
+    <h2>Say hello.</h2>
+    <p>Exploring fintech, markets, and the systems behind how money moves.<br/>Open to internships, collabs, or just a good conversation.</p>
+    <div class="contact-links fade-up">
+
+      <a href="mailto:buildingledgr@gmail.com" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+        buildingledgr@gmail.com
+      </a>
+
+      <a href="https://x.com/ledgrlabs" target="_blank" rel="noopener" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      </a>
+
+      <a href="https://github.com/asmidalvii-byte" target="_blank" rel="noopener" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+        GitHub
+      </a>
+
+      <a href="https://www.linkedin.com/in/asmi-dalvi-b34912357/" target="_blank" rel="noopener" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+        LinkedIn
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 Asmi Dalvi. Building systems that make finance simpler.</span>
+    <a href="https://github.com/asmidalvii-byte" target="_blank" rel="noopener">asmidalvii-byte</a>
+  </footer>
+
+  <script>
+    /* ── WEBGL SHADER HERO ── */
+    (function () {
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      const gl = canvas.getContext('webgl2');
+      if (!gl) return;
+
+      const vertSrc = `#version 300 es
+precision highp float;
+in vec4 position;
+void main(){ gl_Position = position; }`;
+
+      const fragSrc = `#version 300 es
+precision highp float;
+out vec4 O;
+uniform vec2 resolution;
+uniform float time;
+#define FC gl_FragCoord.xy
+#define T time
+#define R resolution
+#define MN min(R.x,R.y)
+
+float rnd(vec2 p){
+  p=fract(p*vec2(12.9898,78.233));
+  p+=dot(p,p+34.56);
+  return fract(p.x*p.y);
+}
+
+float noise(in vec2 p){
+  vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);
+  float a=rnd(i),b=rnd(i+vec2(1,0)),c=rnd(i+vec2(0,1)),d=rnd(i+1.);
+  return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);
+}
+
+float fbm(vec2 p){
+  float t=.0,a=1.;mat2 m=mat2(1.,-.5,.2,1.2);
+  for(int i=0;i<5;i++){t+=a*noise(p);p*=2.*m;a*=.5;}
+  return t;
+}
+
+float clouds(vec2 p){
+  float d=1.,t=.0;
+  for(float i=.0;i<3.;i++){
+    float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);
+    t=mix(t,d,a);d=a;p*=2./(i+1.);
+  }
+  return t;
+}
+
+void main(void){
+  vec2 uv=(FC-.5*R)/MN, st=uv*vec2(2,1);
+  vec3 col=vec3(0);
+  float bg=clouds(vec2(st.x+T*.5,-st.y));
+  uv*=1.-.3*(sin(T*.2)*.5+.5);
+  for(float i=1.;i<12.;i++){
+    uv+=.1*cos(i*vec2(.1+.01*i,.8)+i*i+T*.5+.1*uv.x);
+    vec2 p=uv;
+    float d=length(p);
+    /* Chrome/silver palette — cool blue-grey metallic tones */
+    vec3 chromeBase = vec3(0.55,0.60,0.65) + 0.45*cos(sin(i)*vec3(0.15,0.08,0.04)+vec3(0,0.3,0.6));
+    col+=.00125/d*(chromeBase*2.0);
+    float b=noise(i+p+bg*1.731);
+    col+=.0018*b/length(max(p,vec2(b*p.x*.02,p.y)));
+    /* Chrome dark reflection tones */
+    col=mix(col,vec3(bg*.18,bg*.20,bg*.24),d);
+  }
+  /* Boost brightness, keep chrome feel */
+  col = pow(col, vec3(0.85));
+  O=vec4(col,1);
+}`;
+
+      function compile(type, src) {
+        const sh = gl.createShader(type);
+        gl.shaderSource(sh, src);
+        gl.compileShader(sh);
+        return sh;
+      }
+
+      const prog = gl.createProgram();
+      gl.attachShader(prog, compile(gl.VERTEX_SHADER, vertSrc));
+      gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fragSrc));
+      gl.linkProgram(prog);
+      gl.useProgram(prog);
+
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,1,-1,-1,1,1,1,-1]), gl.STATIC_DRAW);
+      const pos = gl.getAttribLocation(prog, 'position');
+      gl.enableVertexAttribArray(pos);
+      gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+      const uRes  = gl.getUniformLocation(prog, 'resolution');
+      const uTime = gl.getUniformLocation(prog, 'time');
+
+      function resize() {
+        const dpr = Math.max(1, 0.5 * devicePixelRatio);
+        canvas.width  = canvas.offsetWidth  * dpr;
+        canvas.height = canvas.offsetHeight * dpr;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+
+      function loop(now) {
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uTime, now * 1e-3);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        requestAnimationFrame(loop);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+      requestAnimationFrame(loop);
+    })();
+
+    /* ── FADE-IN OBSERVER ── */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Nav active state
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 140) current = s.id; });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current ? '#c0c0c0' : '';
+      });
+    });
+  </script>
+
+</body>
+</html>

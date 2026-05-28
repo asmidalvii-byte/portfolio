@@ -713,6 +713,78 @@
       border-top: 1px solid var(--border);
     }
 
+    #education {
+      padding: 120px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .edu-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+
+    .edu-col .section-label { margin-bottom: 32px; }
+
+    .edu-list { display: flex; flex-direction: column; gap: 32px; }
+
+    .edu-item {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .edu-year {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      padding-top: 3px;
+      min-width: 90px;
+    }
+
+    .edu-school {
+      font-size: 16px;
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .edu-degree {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .lang-list { display: flex; flex-direction: column; gap: 20px; }
+
+    .lang-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .lang-name {
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .lang-level {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .edu-inner { grid-template-columns: 1fr; gap: 60px; }
+      #education { padding: 80px 24px; }
+    }
+
     .skills-inner {
       max-width: 900px;
       margin: 0 auto;
@@ -877,6 +949,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <a href="mailto:buildingledgr@gmail.com" class="nav-cta">Let's talk →</a>
@@ -1109,6 +1182,56 @@
         <div class="skill-pill">yfinance</div>
         <div class="skill-pill">REST APIs</div>
         <div class="skill-pill">Vercel · Render</div>
+        <div class="skill-pill">Excel</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION & LANGUAGES -->
+  <section id="education">
+    <div class="edu-inner">
+      <div class="edu-col fade-up">
+        <div class="section-label">Education</div>
+        <div class="edu-list">
+          <div class="edu-item">
+            <span class="edu-year">2025 – current</span>
+            <div>
+              <div class="edu-school">Manipal Institute of Technology, Bengaluru</div>
+              <div class="edu-degree">B.Tech Computer Science</div>
+            </div>
+          </div>
+          <div class="edu-item">
+            <span class="edu-year">2023 – 2025</span>
+            <div>
+              <div class="edu-school">Podar International School</div>
+              <div class="edu-degree">Higher Secondary</div>
+            </div>
+          </div>
+          <div class="edu-item">
+            <span class="edu-year">2012 – 2023</span>
+            <div>
+              <div class="edu-school">Goldcrest High Vashi</div>
+              <div class="edu-degree">Primary & Secondary</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="edu-col fade-up">
+        <div class="section-label">Languages</div>
+        <div class="lang-list">
+          <div class="lang-item">
+            <span class="lang-name">English</span>
+            <span class="lang-level">Primary</span>
+          </div>
+          <div class="lang-item">
+            <span class="lang-name">Hindi</span>
+            <span class="lang-level">Fluent</span>
+          </div>
+          <div class="lang-item">
+            <span class="lang-name">Marathi</span>
+            <span class="lang-level">Native</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>

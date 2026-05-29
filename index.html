@@ -748,8 +748,15 @@
 
     .edu-inner {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 0 60px;
+      align-items: start;
+    }
+
+    .edu-divider {
+      background: var(--border);
+      height: 100%;
+      min-height: 200px;
     }
 
     .edu-col .section-label { margin-bottom: 32px; }
@@ -809,6 +816,7 @@
 
     @media (max-width: 768px) {
       .edu-inner { grid-template-columns: 1fr; gap: 60px; }
+      .edu-divider { display: none; }
       #education { padding: 80px 24px; }
     }
 
@@ -934,8 +942,8 @@
     /* ── FADE UP ── */
     .fade-up {
       opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
@@ -987,7 +995,6 @@
     <canvas id="hero-canvas"></canvas>
     <div class="hero-content">
       <div class="hero-eyebrow">
-        <div class="eyebrow-dot"></div>
         Computer Science · MIT Bengaluru
       </div>
       <h1>Building things<br/>that <em>actually</em><br/>matter.</h1>
@@ -1001,7 +1008,6 @@
     </div>
     <div class="hero-scroll">
       <div class="scroll-line"></div>
-      scroll
     </div>
   </section>
 
@@ -1108,15 +1114,6 @@
           Fetches real-time US stock prices, calculates P&amp;L per position, tracks cost basis,
           and visualizes allocation and price history with interactive Plotly charts, persisted in SQLite.
         </p>
-        <div class="project-tech">
-          <span class="tech-chip">Python</span>
-          <span class="tech-chip">Streamlit</span>
-          <span class="tech-chip">SQLite</span>
-          <span class="tech-chip">SQLAlchemy</span>
-          <span class="tech-chip">yfinance</span>
-          <span class="tech-chip">Plotly</span>
-          <span class="tech-chip">pandas</span>
-        </div>
         <div class="project-links">
           <a href="https://portfoliotracker-d8npsnkzpyebcgddmfy3uk.streamlit.app" target="_blank" rel="noopener" class="link-btn link-primary">Live Demo →</a>
           <a href="https://github.com/asmidalvii-byte/Portfolio_Tracker" target="_blank" rel="noopener" class="link-btn link-ghost">GitHub</a>
@@ -1132,18 +1129,23 @@
           Adjustable parameters, buy/sell signal charts, performance metrics, and portfolio
           vs buy-and-hold comparison, deployed on Render with Gunicorn.
         </p>
-        <div class="project-tech">
-          <span class="tech-chip">Python</span>
-          <span class="tech-chip">Dash</span>
-          <span class="tech-chip">Plotly</span>
-          <span class="tech-chip">yfinance</span>
-          <span class="tech-chip">pandas</span>
-          <span class="tech-chip">numpy</span>
-          <span class="tech-chip">Gunicorn</span>
-        </div>
         <div class="project-links">
           <a href="https://backtesting-engine.onrender.com" target="_blank" rel="noopener" class="link-btn link-primary">Live Demo →</a>
           <a href="https://github.com/asmidalvii-byte/backtesting-engine" target="_blank" rel="noopener" class="link-btn link-ghost">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Dark Pool Simulator — wide -->
+      <div class="project-card wide fade-up">
+        <span class="project-tag tag-wip">In Progress</span>
+        <div class="project-title">Dark Pool Simulator</div>
+        <p class="project-desc">
+          I became interested in the structure underneath price movements, the logic beneath
+          apparent chaos. This models how dark pools work: order matching, price discovery,
+          and what hidden liquidity does to public prices.
+        </p>
+        <div class="project-links">
+          <a href="https://github.com/asmidalvii-byte" target="_blank" rel="noopener" class="link-btn link-ghost">Follow on GitHub</a>
         </div>
       </div>
 
@@ -1160,29 +1162,6 @@
         <p class="project-desc">
           At its core, Ledgr is built around the idea that business owners should be able to focus on running their business without constantly feeling overwhelmed by the financial side of it.
         </p>
-        <div class="project-tech">
-          <span class="tech-chip">Fintech</span>
-          <span class="tech-chip">Financial Clarity</span>
-        </div>
-      </div>
-
-      <!-- Dark Pool Simulator — wide -->
-      <div class="project-card wide fade-up">
-        <span class="project-tag tag-wip">In Progress</span>
-        <div class="project-title">Dark Pool Simulator</div>
-        <p class="project-desc">
-          I became interested in the structure underneath price movements, the logic beneath
-          apparent chaos. This models how dark pools work: order matching, price discovery,
-          and what hidden liquidity does to public prices.
-        </p>
-        <div class="project-tech">
-          <span class="tech-chip">Python</span>
-          <span class="tech-chip">Market Microstructure</span>
-          <span class="tech-chip">Simulation</span>
-        </div>
-        <div class="project-links">
-          <a href="https://github.com/asmidalvii-byte" target="_blank" rel="noopener" class="link-btn link-ghost">Follow on GitHub</a>
-        </div>
       </div>
 
     </div>
@@ -1196,20 +1175,18 @@
       <div class="skills-grid fade-up">
         <div class="skill-pill">Python</div>
         <div class="skill-pill">Java</div>
-        <div class="skill-pill">HTML &amp; CSS</div>
-        <div class="skill-pill">Data Analysis</div>
-        <div class="skill-pill">Quantitative Finance</div>
-        <div class="skill-pill">Algorithmic Trading</div>
+        <div class="skill-pill">HTML</div>
+        <div class="skill-pill">SQL</div>
+        <div class="skill-pill">pandas</div>
+        <div class="skill-pill">NumPy</div>
         <div class="skill-pill">Git &amp; GitHub</div>
-        <div class="skill-pill">pandas · numpy</div>
-        <div class="skill-pill">Streamlit · Dash</div>
-        <div class="skill-pill">Plotly</div>
-        <div class="skill-pill">SQLite · SQLAlchemy</div>
-        <div class="skill-pill">JavaScript</div>
-        <div class="skill-pill">yfinance</div>
         <div class="skill-pill">REST APIs</div>
-        <div class="skill-pill">Vercel · Render</div>
-        <div class="skill-pill">Excel</div>
+        <div class="skill-pill">Data Visualization</div>
+        <div class="skill-pill">Financial Data Analysis</div>
+        <div class="skill-pill">Object-Oriented Programming (OOP)</div>
+        <div class="skill-pill">Basic Web Development</div>
+        <div class="skill-pill">Dashboard Development</div>
+        <div class="skill-pill">Debugging &amp; Problem Solving</div>
       </div>
     </div>
   </section>
@@ -1243,6 +1220,7 @@
           </div>
         </div>
       </div>
+      <div class="edu-divider"></div>
       <div class="edu-col fade-up">
         <div class="section-label">Languages</div>
         <div class="lang-list">
@@ -1421,16 +1399,16 @@ void main(void){
       requestAnimationFrame(loop);
     })();
 
+
     /* ── FADE-IN OBSERVER ── */
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), i * 100);
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
-
+    }, { threshold: 0.08 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
     // Nav active state
